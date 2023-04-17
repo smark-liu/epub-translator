@@ -32,14 +32,12 @@ func (e *EpubParser) Parse() (string, error) {
 
 func (e *EpubParser) translate() {
 	filepath.Walk(e.tempDir, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() && (filepath.Ext(path) == ".html" || filepath.Ext(path) == ".xhtml") {
+		if !info.IsDir() && (filepath.Ext(path) == ".html" || filepath.Ext(path) == ".xhtml" || filepath.Ext(path) == ".htm") {
 			// Open the file and read its contents.
 			file, err := os.OpenFile(path, os.O_RDWR, 0666)
 			if err != nil {
 				panic(err)
 			}
-			defer file.Close()
-
 			e.translateFile(file)
 		}
 		return nil
@@ -47,6 +45,7 @@ func (e *EpubParser) translate() {
 }
 
 func (e *EpubParser) translateFile(file *os.File) {
+	defer file.Close()
 	reader, err := goquery.NewDocumentFromReader(file)
 	if err != nil {
 		panic(err)
@@ -57,6 +56,7 @@ func (e *EpubParser) translateFile(file *os.File) {
 		// translate the text and insert it after the <p> tag
 		translate, _ := e.Translator.Translate(nodeP.Eq(i).Text(), e.From, e.To)
 		nodeP.Eq(i).AfterHtml("<p>" + translate + "</p>")
+		log.Printf("Translate the text: %s\n", nodeP.Eq(i).Text())
 	}
 
 	// save and replace the source file
