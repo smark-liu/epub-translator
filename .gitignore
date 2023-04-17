@@ -1,3 +1,5 @@
 *.epub
 epub-translator
 /parser/temp
+/parser/temp/*
+*.chinese
