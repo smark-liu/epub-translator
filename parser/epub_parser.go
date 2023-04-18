@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -31,6 +32,7 @@ func (e *EpubParser) Parse() (string, error) {
 }
 
 func (e *EpubParser) translate() {
+	wg := &sync.WaitGroup{}
 	filepath.Walk(e.tempDir, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() && (filepath.Ext(path) == ".html" || filepath.Ext(path) == ".xhtml" || filepath.Ext(path) == ".htm") {
 			// Open the file and read its contents.
@@ -38,14 +40,17 @@ func (e *EpubParser) translate() {
 			if err != nil {
 				panic(err)
 			}
-			e.translateFile(file)
+			go e.translateFile(file, wg)
 		}
+		wg.Wait()
 		return nil
 	})
 }
 
-func (e *EpubParser) translateFile(file *os.File) {
+func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 	defer file.Close()
+	wg.Add(1)
+	defer wg.Done()
 	reader, err := goquery.NewDocumentFromReader(file)
 	if err != nil {
 		panic(err)
