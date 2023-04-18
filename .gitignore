@@ -4,3 +4,4 @@ epub-translator
 /parser/temp/*
 *.chinese
 /temp
+.idea
