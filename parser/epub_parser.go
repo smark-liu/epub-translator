@@ -23,11 +23,11 @@ type EpubParser struct {
 
 func (e *EpubParser) Parse() (string, error) {
 	// Unzip the epub file.
-	e.tempDir = "./temp/" + time.Now().Format("20060102150405")
+	e.tempDir = filepath.Join("./temp", "parser", time.Now().Format("20060102150405"))
 	e.unzip(e.Path, e.tempDir)
 	e.translate()
 	e.zip()
-	return "", nil
+	return e.Path + ".chinese", nil
 }
 
 func (e *EpubParser) translate() {
