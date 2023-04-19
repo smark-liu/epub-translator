@@ -14,6 +14,7 @@ import (
 func HttpServer() {
 	http.HandleFunc("/upload", uploadHandler)
 	http.HandleFunc("/translate", translateHandler)
+	http.HandleFunc("/export", exportHandler)
 
 	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
@@ -52,10 +53,31 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 	filePath := request.FormValue("filePath")
 	sourceLang := request.FormValue("sourceLang")
 	targetLang := request.FormValue("targetLang")
-	outPath, err := parser.GetParser("epub", filePath, sourceLang, targetLang).Parse()
+	translator := request.FormValue("translator")
+	outPath, err := parser.GetParser("epub", filePath, sourceLang, targetLang, translator).Parse()
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	fmt.Fprintf(writer, "File translated successfully: %v", outPath)
+}
+
+func exportHandler(writer http.ResponseWriter, request *http.Request) {
+	filePath := request.FormValue("filePath")
+	file, err := os.Open(filePath)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer file.Close()
+
+	writer.Header().Set("Content-Disposition", "attachment; filename="+filepath.Base(filePath))
+	writer.Header().Set("Content-Type", request.Header.Get("Content-Type"))
+	writer.Header().Set("Content-Length", request.Header.Get("Content-Length"))
+	_, err = io.Copy(writer, file)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 }

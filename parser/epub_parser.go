@@ -69,7 +69,7 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 	if err != nil {
 		panic(err)
 	}
-	// 设置文件指针偏移量为文件开头
+	// set the file pointer to the beginning of the file
 	_, err = file.Seek(0, 0)
 	n, err := file.WriteString(ret)
 	log.Printf("Translate the chepter %s, wrote %d bytes\n", file.Name(), n)
@@ -81,7 +81,7 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 
 // zip zips the temporary directory to a new epub file.
 func (e *EpubParser) zip() {
-	zipFile, err := os.Create(e.Path + ".chinese")
+	zipFile, err := os.Create(e.Path + ".translated")
 	if err != nil {
 		panic(err)
 	}

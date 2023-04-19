@@ -5,3 +5,12 @@ type Translator interface {
 	// source, sourceLang, targetLang
 	Translate(string, string, string) (string, error)
 }
+
+func GetTranslator(translatorType string) Translator {
+	switch translatorType {
+	case "google":
+		return &GoogleTranslator{}
+	default:
+		return nil
+	}
+}
