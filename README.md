@@ -14,7 +14,7 @@ A tool for translating epub books
 
 ## Install
 
-Download release from [release page](!https://github.com/smark-d/epub-translator/releases) based on your platform.
+Download release from [release page](https://github.com/smark-d/epub-translator/releases) based on your platform.
 
 ## Run
 
