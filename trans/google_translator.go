@@ -12,7 +12,6 @@ import (
 )
 
 type GoogleTranslator struct {
-	httpProxy  string
 	httpClient *http.Client
 }
 
