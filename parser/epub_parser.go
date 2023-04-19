@@ -45,16 +45,16 @@ func (e *EpubParser) translate() {
 			if err != nil {
 				panic(err)
 			}
+			wg.Add(1)
 			go e.translateFile(file, wg)
 		}
-		wg.Wait()
 		return nil
 	})
+	wg.Wait()
 }
 
 func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 	defer file.Close()
-	wg.Add(1)
 	defer wg.Done()
 	reader, err := goquery.NewDocumentFromReader(file)
 	if err != nil {
