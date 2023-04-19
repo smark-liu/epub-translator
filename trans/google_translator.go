@@ -6,16 +6,21 @@ import (
 	"fmt"
 	"github.com/robertkrimen/otto"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
 
 type GoogleTranslator struct {
+	httpProxy  string
+	httpClient *http.Client
 }
 
 // NewGoogleTranslator returns a new GoogleTranslator
 func NewGoogleTranslator() *GoogleTranslator {
-	return &GoogleTranslator{}
+	return &GoogleTranslator{
+		httpClient: getHttpClient(),
+	}
 }
 
 func (g *GoogleTranslator) Translate(source, sourceLang, targetLang string) (string, error) {
@@ -34,8 +39,9 @@ func (g *GoogleTranslator) Translate(source, sourceLang, targetLang string) (str
 	url := "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" +
 		sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodedSource
 
-	r, err := http.Get(url)
+	r, err := g.httpClient.Get(url)
 	if err != nil {
+		log.Fatalf("error getting translate.googleapis.com: %v", err)
 		return "err", errors.New("error getting translate.googleapis.com")
 	}
 	defer r.Body.Close()
