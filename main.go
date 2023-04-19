@@ -1,7 +1,8 @@
 package main
 
-import "github.com/smark-d/epub-translator/netserver"
+import "github.com/smark-d/epub-translator/cmd"
 
 func main() {
-	netserver.HttpServer()
+	//netserver.HttpServer()
+	cmd.Execute()
 }

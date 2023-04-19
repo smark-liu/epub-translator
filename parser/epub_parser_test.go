@@ -24,7 +24,7 @@ func TestEpubParser_Parse(t *testing.T) {
 		{
 			name: "Test with epub file",
 			fields: fields{
-				Path:       "/home/smark/code/golang/epub-translator/epub.epub",
+				Path:       "/home/smark/code/go/epub-translator/epub.epub",
 				From:       common.EN,
 				To:         common.ZH,
 				Translator: trans.NewGoogleTranslator(),

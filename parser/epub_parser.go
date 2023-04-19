@@ -25,7 +25,12 @@ type EpubParser struct {
 func (e *EpubParser) Parse() (string, error) {
 	// Unzip the epub file.
 	e.tempDir = filepath.Join("./temp", "parser", time.Now().Format("20060102150405"))
-	e.unzip(e.Path, e.tempDir)
+	err := e.unzip(e.Path, e.tempDir)
+	if err != nil {
+		log.Fatalf("Unzip the epub file %s error: %v", e.Path, err)
+		panic(err)
+	}
+	log.Printf("Unzip the epub file %s to %s\n", e.Path, e.tempDir)
 	e.translate()
 	e.zip()
 	return e.Path + ".chinese", nil
@@ -61,7 +66,7 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 		// translate the text and insert it after the <p> tag
 		translate, _ := e.Translator.Translate(nodeP.Eq(i).Text(), e.From, e.To)
 		nodeP.Eq(i).AfterHtml("<p>" + translate + "</p>")
-		log.Printf("Translate the text: %s\n", nodeP.Eq(i).Text())
+		log.Printf("Translate the file: %s text: %s\n", file.Name(), nodeP.Eq(i).Text())
 	}
 
 	// save and replace the source file
