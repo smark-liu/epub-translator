@@ -5,3 +5,4 @@ epub-translator
 *.translated
 /temp
 .idea
+config.json

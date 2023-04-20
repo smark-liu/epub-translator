@@ -17,6 +17,8 @@ func GetTranslator(translatorType string) Translator {
 	switch translatorType {
 	case "google":
 		return NewGoogleTranslator()
+	case "openai":
+		return NewOpenAITranslator()
 	default:
 		return nil
 	}

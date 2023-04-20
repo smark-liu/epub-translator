@@ -18,7 +18,7 @@ func Execute() {
 	}
 
 	rootCmd.Flags().StringVarP(&filePath, "file", "f", "", "File path")
-	rootCmd.Flags().StringVarP(&translationEngine, "engine", "e", "google", "Translation engine")
+	rootCmd.Flags().StringVarP(&translationEngine, "engine", "e", "google", "Translation engine (google, openai)")
 	rootCmd.Flags().StringVarP(&sourceLanguage, "source", "s", "en", "Source language")
 	rootCmd.Flags().StringVarP(&targetLanguage, "target", "t", "zh-CN", "Target language")
 
