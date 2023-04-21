@@ -1,11 +1,11 @@
 # epub-translator
-A tool for translating epub books
+A tool for translating epub books [简体中文](./README.zh-CN.md)|[繁体中文](./README.zh-TW.md)
 
 # Features
 
 - [x] Translate epub books
 - [x] Use Google Translate API
-- [ ] Use OpenAI GPT-3.5 API
+- [x] Use OpenAI GPT-3.5 API
 - [ ] Use DeepL API
 - [ ] Translate text files
 - [ ] Translate PDF files
@@ -16,7 +16,17 @@ A tool for translating epub books
 
 Download release from [release page](https://github.com/smark-d/epub-translator/releases) based on your platform.
 
-## Run
+## Config OpenAI API (Optional)
+> If you don't want to use OpenAI API, you can skip this step.
+
+1. Create an account on [OpenAI](https://openai.com/).
+2. Create an API key on [OpenAI Dashboard](https://platform.openai.com/account/api-keys).
+3. Create a file named `config.json` in the same directory as the binary file.
+4. Copy the [config.example.json](./config.example.json) file and paste it into the config.json file.
+5. Replace the `apiKey` with your API key.
+6. Replace the apiUrl with your proxy url. (Optional, if you are in China, you can use this or http_proxy environment variable. see [Using proxy](#using-proxy)
+
+## Run it
 
 > It needs sudo permission to run. Because it needs to create and remove a directory in `./temp` directory.
 
@@ -32,7 +42,7 @@ After the translation is completed, the translated epub file will be generated i
 ```bash
 Usage of ./epub-translator:
   -e string
-        engine: google, openai, deepl (default "google")
+        engine: google, openai (default "google")
   -f string
         file filePath
   -s string
