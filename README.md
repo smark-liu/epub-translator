@@ -1,6 +1,8 @@
 # epub-translator
 A tool for translating epub books [简体中文](./README.zh-CN.md)|[繁体中文](./README.zh-TW.md)
 
+Examples:
+![](./doc/img/translate.png)
 # Features
 
 - [x] Translate epub books
