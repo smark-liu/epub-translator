@@ -12,9 +12,9 @@ import (
 )
 
 func HttpServer() {
-	http.HandleFunc("/upload", uploadHandler)
-	http.HandleFunc("/translate", translateHandler)
-	http.HandleFunc("/export", exportHandler)
+	http.HandleFunc("/api/upload", uploadHandler)
+	http.HandleFunc("/api/translate", translateHandler)
+	http.HandleFunc("/api/export", exportHandler)
 
 	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
