@@ -17,7 +17,7 @@
 
 ## 安装
 
-下载发布自[发布页面](https://github.com/smark-d/epub-translator/releases)基于您的平台。
+下载发布自[发布页面](https://github.com/smark-d/epub-translator/releases) based on your platform.
 
 ## 配置 OpenAI API（可选）
 
@@ -64,7 +64,7 @@ Usage of ./epub-translator:
 sudo env http_proxy=http://localhost:1087 ./epub-translator -f ./path/xxx.epub -s en -t zh-CN -e google
 ```
 
-# Contributing
+# 贡献
 
 -   克隆这个仓库
 -   跑步`go build`构建二进制文件
