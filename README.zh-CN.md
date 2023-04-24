@@ -64,7 +64,7 @@ Usage of ./epub-translator:
 sudo env http_proxy=http://localhost:1087 ./epub-translator -f ./path/xxx.epub -s en -t zh-CN -e google
 ```
 
-# 贡献
+# Contributing
 
 -   克隆这个仓库
 -   跑步`go build`构建二进制文件
