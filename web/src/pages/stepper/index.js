@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Upload} from '../index'
+import {Upload, Translate} from '../index'
 
 const steps = [
   { id: 1, title: '上传文件' },
@@ -37,7 +37,7 @@ const Stepper = () => {
         )}
         {activeStep === 1 && (
           <div>
-            <p>开始翻译文件组件</p>
+            <Translate/>
             <button onClick={handleBack}>上一步</button>
             <button onClick={handleNext}>下一步</button>
           </div>
