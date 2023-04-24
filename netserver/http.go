@@ -32,7 +32,8 @@ func uploadHandler(writer http.ResponseWriter, request *http.Request) {
 	defer file.Close()
 
 	os.MkdirAll(filepath.Join("./temp", "file"), fs.ModePerm)
-	newFile, err := os.Create(filepath.Join("./temp", "file", filename))
+	filePath := filepath.Join("./temp", "file", filename)
+	newFile, err := os.Create(filePath)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -44,8 +45,7 @@ func uploadHandler(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Fprintf(writer, "File uploaded successfully: %v", newFile.Name())
+	fmt.Fprintf(writer, "{\"filePath\": \"%v\"}", filePath)
 }
 
 func translateHandler(writer http.ResponseWriter, request *http.Request) {
@@ -59,6 +59,16 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	//go func() {
+	//	// 每20s给客户端发送一次心跳
+	//	ticker := time.NewTicker(20 * time.Second)
+	//	for {
+	//		select {
+	//		case <-ticker.C:
+	//			fmt.Fprintf(writer, "The file is being translated")
+	//		}
+	//	}
+	//}()
 	fmt.Fprintf(writer, "File translated successfully: %v", outPath)
 }
 
