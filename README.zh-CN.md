@@ -13,11 +13,11 @@
 -   [ ] 翻译文本文件
 -   [ ] 翻译 PDF 文件
 
-# 用法
+# Usage
 
 ## 安装
 
-下载发布自[发布页面](https://github.com/smark-d/epub-translator/releases) based on your platform.
+下载发布自[发布页面](https://github.com/smark-d/epub-translator/releases)基于您的平台。
 
 ## 配置 OpenAI API（可选）
 
