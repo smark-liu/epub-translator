@@ -22,19 +22,17 @@ const Translate = () => {
     setTranslator(e.target.value);
   };
 
-  const handleTranslate = async () => {
+const handleTranslate = async () => {
     try {
+      const formData = new FormData();
+      formData.append('filePath', filePath);
+      formData.append('sourceLang', sourceLang);
+      formData.append('targetLang', targetLang);
+      formData.append('translator', translator);
+
       const response = await fetch('/api/translate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          filePath,
-          sourceLang,
-          targetLang,
-          translator,
-        }),
+        body: formData,
       });
       const result = await response.json();
       console.log(result);
@@ -42,6 +40,7 @@ const Translate = () => {
       console.error(error);
     }
   };
+
 
   return (
     <div>
