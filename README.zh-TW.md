@@ -1,6 +1,6 @@
 # epub翻譯器
 
-一個翻譯epub書籍的工具[簡體中文](./README.zh-CN.md)\|[繁體中文](./README.zh-TW.md)
+A tool for translating epub books [簡體中文](./README.zh-CN.md)\|[繁體中文](./README.zh-TW.md)
 
 例子：![](./doc/img/translate.png)
 
@@ -30,7 +30,7 @@
 5.  更換`apiKey`使用您的 API 密鑰。
 6.  將 apiUrl 替換為您的代理 url。 （可選，如果你在中國，可以使用這個或者http_proxy環境變量。見[使用代理](#using-proxy)
 
-## 運行
+## Run it
 
 > 它需要 sudo 權限才能運行。因為它需要創建和刪除一個目錄`./temp`目錄。
 
