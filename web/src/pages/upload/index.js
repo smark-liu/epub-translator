@@ -28,7 +28,7 @@ const Upload = () => {
 
   return (
     <div>
-      <h1>上传文件页面</h1>
+      <h1>上传文件</h1>
       <div>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>上传</button>
