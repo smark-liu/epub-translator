@@ -1,6 +1,6 @@
 # epub翻譯器
 
-A tool for translating epub books [簡體中文](./README.zh-CN.md)\|[繁體中文](./README.zh-TW.md)
+一個翻譯epub書籍的工具[簡體中文](./README.zh-CN.md)\|[繁體中文](./README.zh-TW.md)
 
 例子：![](./doc/img/translate.png)
 
@@ -26,11 +26,11 @@ A tool for translating epub books [簡體中文](./README.zh-CN.md)\|[繁體中�
 1.  創建一個帳戶[開放人工智能](https://openai.com/).
 2.  創建 API 密鑰[OpenAI 儀表板](https://platform.openai.com/account/api-keys).
 3.  創建一個名為`config.json`在與二進製文件相同的目錄中。
-4.  複製[配置.example.json](./config.example.json)文件並將其粘貼到 config.json 文件中。
+4.  複製[配置示例.json](./config.example.json) file and paste it into the config.json file.
 5.  更換`apiKey`使用您的 API 密鑰。
 6.  將 apiUrl 替換為您的代理 url。 （可選，如果你在中國，可以使用這個或者http_proxy環境變量。見[使用代理](#using-proxy)
 
-## Run it
+## 運行
 
 > 它需要 sudo 權限才能運行。因為它需要創建和刪除一個目錄`./temp`目錄。
 
@@ -70,7 +70,7 @@ sudo env http_proxy=http://localhost:1087 ./epub-translator -f ./path/xxx.epub -
 -   跑步`go build`構建二進製文件
 -   跑步`go test`測試代碼
 
-歡迎公關。
+PR is welcome.
 
 # 執照
 
