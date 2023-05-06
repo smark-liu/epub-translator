@@ -26,7 +26,7 @@
 1.  创建一个帐户[开放人工智能](https://openai.com/).
 2.  创建 API 密钥[OpenAI 仪表板](https://platform.openai.com/account/api-keys).
 3.  创建一个名为`config.json`在与二进制文件相同的目录中。
-4.  复制[配置示例.json](./config.example.json)文件并将其粘贴到 config.json 文件中。
+4.  复制[配置.example.json](./config.example.json)文件并将其粘贴到 config.json 文件中。
 5.  更换`apiKey`使用您的 API 密钥。
 6.  将 apiUrl 替换为您的代理 url。 （可选，如果你在中国，可以使用这个或者http_proxy环境变量。见[使用代理](#using-proxy)
 
