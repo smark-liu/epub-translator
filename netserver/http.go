@@ -69,7 +69,7 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 	//		}
 	//	}
 	//}()
-	fmt.Fprintf(writer, "File translated successfully: %v", outPath)
+	fmt.Fprintf(writer, "{\"outFilePath\": \"%v\"}", outPath)
 }
 
 func exportHandler(writer http.ResponseWriter, request *http.Request) {
