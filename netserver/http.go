@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func HttpServer() {
@@ -54,21 +55,33 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 	sourceLang := request.FormValue("sourceLang")
 	targetLang := request.FormValue("targetLang")
 	translator := request.FormValue("translator")
+
+	// 每10s给客户端发送一次心跳
+	endSignal := make(chan bool)
+	defer func() {
+		endSignal <- true
+		close(endSignal)
+	}()
+	go func() {
+		ticker := time.NewTicker(10 * time.Second)
+		for {
+			select {
+			case <-ticker.C:
+				fmt.Fprintf(writer, "The file is being translated")
+				writer.(http.Flusher).Flush()
+			case <-endSignal:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
 	outPath, err := parser.GetParser("epub", filePath, sourceLang, targetLang, translator).Parse()
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	//go func() {
-	//	// 每20s给客户端发送一次心跳
-	//	ticker := time.NewTicker(20 * time.Second)
-	//	for {
-	//		select {
-	//		case <-ticker.C:
-	//			fmt.Fprintf(writer, "The file is being translated")
-	//		}
-	//	}
-	//}()
+
 	fmt.Fprintf(writer, "{\"outFilePath\": \"%v\"}", outPath)
 }
 
