@@ -63,7 +63,7 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 		close(endSignal)
 	}()
 	go func() {
-		ticker := time.NewTicker(10 * time.Second)
+		ticker := time.NewTicker(1 * time.Second)
 		for {
 			select {
 			case <-ticker.C:

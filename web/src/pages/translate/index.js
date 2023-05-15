@@ -22,24 +22,29 @@ const Translate = () => {
     setTranslator(e.target.value);
   };
 
-const handleTranslate = async () => {
+  const handleTranslate = async () => {
     try {
       const formData = new FormData();
       formData.append('filePath', filePath);
       formData.append('sourceLang', sourceLang);
       formData.append('targetLang', targetLang);
       formData.append('translator', translator);
-
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await response.json();
-      console.log(result);
+  
+      const eventSource = new EventSource(`/api/translate?filePath=${filePath}&sourceLang=${sourceLang}&targetLang=${targetLang}&translator=${translator}`);
+  
+      eventSource.onmessage = (event) => {
+        console.log(event.data);
+      };
+  
+      eventSource.onerror = (error) => {
+        console.error(error);
+      };
     } catch (error) {
       console.error(error);
     }
   };
+  
+
 
 
   return (
