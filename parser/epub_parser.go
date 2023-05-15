@@ -23,6 +23,7 @@ type EpubParser struct {
 }
 
 func (e *EpubParser) Parse() (string, error) {
+	// TODO Using memory file system instead of temp file system.
 	// Unzip the epub file.
 	e.tempDir = filepath.Join("./temp", "parser", time.Now().Format("20060102150405"))
 	err := e.unzip(e.Path, e.tempDir)
