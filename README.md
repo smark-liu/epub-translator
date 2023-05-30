@@ -51,6 +51,8 @@ Usage of ./epub-translator:
         sourceLanguage language
   -t string
         targetLanguage language
+  -k bool
+        keep the original text (default true)
 ```
 
 ## Using proxy

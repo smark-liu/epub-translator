@@ -3,8 +3,6 @@ package parser
 import (
 	"archive/zip"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/smark-d/epub-translator/trans"
 	"io"
 	"log"
 	"os"
@@ -12,12 +10,16 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/smark-d/epub-translator/trans"
 )
 
 type EpubParser struct {
 	Path       string // epub file Path
 	From       string // source language
 	To         string // target language
+	KeepOrigin bool   // keep the original file
 	Translator trans.Translator
 	tempDir    string
 }

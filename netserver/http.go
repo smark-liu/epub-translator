@@ -2,7 +2,6 @@ package netserver
 
 import (
 	"fmt"
-	"github.com/smark-d/epub-translator/parser"
 	"io"
 	"io/fs"
 	"log"
@@ -10,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/smark-d/epub-translator/parser"
 )
 
 func HttpServer() {
@@ -76,7 +77,7 @@ func translateHandler(writer http.ResponseWriter, request *http.Request) {
 		}
 	}()
 
-	outPath, err := parser.GetParser("epub", filePath, sourceLang, targetLang, translator).Parse()
+	outPath, err := parser.GetParser("epub", filePath, sourceLang, targetLang, translator, true).Parse()
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
