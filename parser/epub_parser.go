@@ -71,7 +71,7 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 		if e.KeepOrigin {
 			nodeP.Eq(i).AfterHtml("<p>" + translate + "</p>")
 		} else {
-			nodeP.Eq(i).ReplaceWithHtml("<p>" + translate + "</p>")
+			nodeP.Eq(i).SetText(translate)
 		}
 		log.Printf("Translate the file: %s text: %s\n", file.Name(), nodeP.Eq(i).Text())
 	}
