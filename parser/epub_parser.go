@@ -3,8 +3,6 @@ package parser
 import (
 	"archive/zip"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/smark-d/epub-translator/trans"
 	"io"
 	"log"
 	"os"
@@ -12,12 +10,16 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/smark-d/epub-translator/trans"
 )
 
 type EpubParser struct {
 	Path       string // epub file Path
 	From       string // source language
 	To         string // target language
+	KeepOrigin bool   // keep the original file
 	Translator trans.Translator
 	tempDir    string
 }
@@ -66,7 +68,11 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 	for i := 0; i < nodeP.Size(); i++ {
 		// translate the text and insert it after the <p> tag
 		translate, _ := e.Translator.Translate(nodeP.Eq(i).Text(), e.From, e.To)
-		nodeP.Eq(i).AfterHtml("<p>" + translate + "</p>")
+		if e.KeepOrigin {
+			nodeP.Eq(i).AfterHtml("<p>" + translate + "</p>")
+		} else {
+			nodeP.Eq(i).ReplaceWithHtml("<p>" + translate + "</p>")
+		}
 		log.Printf("Translate the file: %s text: %s\n", file.Name(), nodeP.Eq(i).Text())
 	}
 
@@ -78,11 +84,10 @@ func (e *EpubParser) translateFile(file *os.File, wg *sync.WaitGroup) {
 	// set the file pointer to the beginning of the file
 	_, err = file.Seek(0, 0)
 	n, err := file.WriteString(ret)
-	log.Printf("Translate the chepter %s, wrote %d bytes\n", file.Name(), n)
+	log.Printf("Translate the chapter %s, wrote %d bytes\n", file.Name(), n)
 	if err != nil {
 		panic(err)
 	}
-
 }
 
 // zip zips the temporary directory to a new epub file.

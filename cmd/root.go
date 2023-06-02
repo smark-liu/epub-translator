@@ -2,18 +2,23 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+
 	"github.com/smark-d/epub-translator/parser"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func Execute() {
 	var filePath, translationEngine, sourceLanguage, targetLanguage string
+	var keepOrigin string
+
 	var rootCmd = &cobra.Command{
 		Use:   "translator",
 		Short: "A command-line epub translation tool",
 		Run: func(cmd *cobra.Command, args []string) {
-			parser.GetParser("epub", filePath, sourceLanguage, targetLanguage, translationEngine).Parse()
+			keepOriginBool, _ := strconv.ParseBool(keepOrigin)
+			parser.GetParser("epub", filePath, sourceLanguage, targetLanguage, translationEngine, keepOriginBool).Parse()
 		},
 	}
 
@@ -21,6 +26,7 @@ func Execute() {
 	rootCmd.Flags().StringVarP(&translationEngine, "engine", "e", "google", "Translation engine (google, openai)")
 	rootCmd.Flags().StringVarP(&sourceLanguage, "source", "s", "en", "Source language")
 	rootCmd.Flags().StringVarP(&targetLanguage, "target", "t", "zh-CN", "Target language")
+	rootCmd.Flags().StringVarP(&keepOrigin, "keep", "k", "true", "Keep the original text")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
