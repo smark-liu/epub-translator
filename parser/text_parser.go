@@ -27,6 +27,21 @@ func (e *TextParser) Parse() (string, error) {
 
 	// Split the text into segments
 	segments := strings.Split(string(text), "\n")
+
+	// Join the segments back into a single string
+	translatedText := strings.Join(e.translateSegments(segments), "\n")
+
+	// Write the translated text to a new file
+	newName := strings.TrimSuffix(e.Path, filepath.Ext(e.Path)) + ".trans.txt"
+	err = os.WriteFile(newName, []byte(translatedText), 0644)
+	if err != nil {
+		return "", err
+	}
+
+	return translatedText, nil
+}
+
+func (e *TextParser) translateSegments(segments []string) []string {
 	var translatedSegments []string
 
 	// Translate every 5 segments
@@ -38,24 +53,13 @@ func (e *TextParser) Parse() (string, error) {
 		subSegments := segments[i:end]
 		subTranslated, err := e.Translator.Translate(strings.Join(subSegments, "\n"), e.From, e.To)
 		if err != nil {
-			return "", err
+			return []string{}
 		}
 		log.Printf("Translated from %s to %s: %s -> %s\n", e.From, e.To, strings.Join(subSegments, "\n"), subTranslated)
 		if e.KeepOrigin {
 			translatedSegments = append(translatedSegments, subSegments...)
 		}
-		translatedSegments = append(translatedSegments, strings.Split(subTranslated, "\n")...)
+		translatedSegments = append(translatedSegments, subTranslated)
 	}
-
-	// Join the segments back into a single string
-	translatedText := strings.Join(translatedSegments, "\n")
-
-	// Write the translated text to a new file
-	newName := strings.TrimSuffix(e.Path, filepath.Ext(e.Path)) + ".trans.txt"
-	err = os.WriteFile(newName, []byte(translatedText), 0644)
-	if err != nil {
-		return "", err
-	}
-
-	return translatedText, nil
+	return translatedSegments
 }
