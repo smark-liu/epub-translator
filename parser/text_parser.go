@@ -29,17 +29,22 @@ func (e *TextParser) Parse() (string, error) {
 	segments := strings.Split(string(text), "\n")
 	var translatedSegments []string
 
-	// Translate each segment
-	for _, segment := range segments {
-		translated, err := e.Translator.Translate(segment, e.From, e.To)
+	// Translate every 5 segments
+	for i := 0; i < len(segments); i += 5 {
+		end := i + 5
+		if end > len(segments) {
+			end = len(segments)
+		}
+		subSegments := segments[i:end]
+		subTranslated, err := e.Translator.Translate(strings.Join(subSegments, "\n"), e.From, e.To)
 		if err != nil {
 			return "", err
 		}
-		log.Printf("Translated from %s to %s: %s -> %s\n", e.From, e.To, segment, translated)
+		log.Printf("Translated from %s to %s: %s -> %s\n", e.From, e.To, strings.Join(subSegments, "\n"), subTranslated)
 		if e.KeepOrigin {
-			translatedSegments = append(translatedSegments, segment)
+			translatedSegments = append(translatedSegments, subSegments...)
 		}
-		translatedSegments = append(translatedSegments, translated)
+		translatedSegments = append(translatedSegments, strings.Split(subTranslated, "\n")...)
 	}
 
 	// Join the segments back into a single string
