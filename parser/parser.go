@@ -19,6 +19,15 @@ func GetParser(parserType, path, sourceLang, targetLong, translator string, keep
 			KeepOrigin: keepOrigin,
 			Translator: trans.GetTranslator(translator),
 		}
+	case "text":
+		return &TextParser{
+			Path:       path,
+			From:       sourceLang,
+			To:         targetLong,
+			KeepOrigin: keepOrigin,
+			Translator: trans.GetTranslator(translator),
+		}
+
 	default:
 		return nil
 	}

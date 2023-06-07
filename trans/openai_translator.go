@@ -1,13 +1,14 @@
 package trans
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/smark-d/epub-translator/common"
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
+
+	"github.com/smark-d/epub-translator/common"
 )
 
 type OpenAITranslator struct {
@@ -34,49 +35,51 @@ func (o *OpenAITranslator) Translate(source, sourceLang, targetLang string) (str
 	if err != nil {
 		return "", err
 	}
-	// 提取翻译结果
-	translations := response["choices"].([]interface{})[0].(map[string]interface{})["text"].(string)
-	return translations, nil
+	return response, nil
 }
 
-func (o *OpenAITranslator) sendRequest(model, prompt string) (map[string]interface{}, error) {
+func (o *OpenAITranslator) sendRequest(model, prompt string) (string, error) {
 	// construct Request Data
-	data := url.Values{}
-	data.Set("model", model)
-	data.Set("prompt", prompt)
-	data.Set("temperature", "0.7")
-	data.Set("max_tokens", "60")
+	requestData := map[string]interface{}{
+		"model":       model,
+		"temperature": 0.7,
+	}
+	messages := []map[string]string{
+		{"role": "user", "content": prompt},
+	}
+	requestData["messages"] = messages
 
 	// construct Request
-	url, err := url.JoinPath(o.apiUrl, "v1/completions")
+	url, err := url.JoinPath(o.apiUrl, "v1/chat/completions")
+	requestBody, err := json.Marshal(requestData)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	req, err := http.NewRequest("POST", url, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+o.apiKey)
 
 	// Do Request
 	resp, err := o.httpClient.Do(req)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	defer resp.Body.Close()
 
 	// Read Response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	var response map[string]interface{}
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return response, nil
+	return response["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})["content"].(string), nil
 }

@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/smark-d/epub-translator/common"
 	"github.com/smark-d/epub-translator/parser"
 	"github.com/spf13/cobra"
 )
@@ -18,7 +19,7 @@ func Execute() {
 		Short: "A command-line epub translation tool",
 		Run: func(cmd *cobra.Command, args []string) {
 			keepOriginBool, _ := strconv.ParseBool(keepOrigin)
-			parser.GetParser("epub", filePath, sourceLanguage, targetLanguage, translationEngine, keepOriginBool).Parse()
+			parser.GetParser(common.GetParserByName(filePath), filePath, sourceLanguage, targetLanguage, translationEngine, keepOriginBool).Parse()
 		},
 	}
 
