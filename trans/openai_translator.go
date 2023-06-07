@@ -50,12 +50,12 @@ func (o *OpenAITranslator) sendRequest(model, prompt string) (string, error) {
 	requestData["messages"] = messages
 
 	// construct Request
-	url, err := url.JoinPath(o.apiUrl, "v1/chat/completions")
+	URL, err := url.JoinPath(o.apiUrl, "v1/chat/completions")
 	requestBody, err := json.Marshal(requestData)
 	if err != nil {
 		return "", err
 	}
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
+	req, err := http.NewRequest("POST", URL, bytes.NewBuffer(requestBody))
 	if err != nil {
 		return "", err
 	}
