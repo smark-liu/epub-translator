@@ -9,7 +9,7 @@ Examples:
 - [x] Use Google Translate API
 - [x] Use OpenAI GPT-3.5 API
 - [ ] Use DeepL API
-- [ ] Translate text files
+- [x] Translate text files
 - [ ] Translate PDF files
 
 # Usage
